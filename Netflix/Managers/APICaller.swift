@@ -9,10 +9,7 @@ import Foundation
 
 struct Constants {
     static let API_KEY = "5871c22062e9ef7ee926aa3ba1340da6"
-    //"697d439ac993538da4e3e60b54e762cd"
-    //"5871c22062e9ef7ee926aa3ba1340da6" -- MY
     static let baseURL = "https://api.themoviedb.org"
-    //"697d439ac993538da4e3e60b54e762cd"
     static let YoutubeAPI_KEY = "AIzaSyBbSDhmuyqrncPnWaRa1II45Ja25EvAlns"
     static let YoutubeBaseURL = "https://youtube.googleapis.com/youtube/v3/search?"
 }
@@ -22,13 +19,10 @@ enum APIError: Error {
 }
 
 class APICaller {
-    //https://api.themoviedb.org/3/trending/all/day?api_key=
     static let shared = APICaller()
     
     func getTrendingMovies(completion: @escaping (Result<[Title], Error >) -> Void) {
-     //url
         guard let url = URL(string: "\(Constants.baseURL)/3/trending/movie/day?api_key=\(Constants.API_KEY)") else { return }
-        //parsing JSON
         let task = URLSession.shared.dataTask(with: url) { data, _, error in
             guard let data = data, error == nil else { return }
             
@@ -125,9 +119,6 @@ class APICaller {
     }
     
     func getDiscoverMovies(completion: @escaping (Result<[Title], Error >) -> Void) {
-        
-        //https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate
-        
         guard let url = URL(string: "\(Constants.baseURL)/3/discover/movie?api_key=\(Constants.API_KEY)&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_watch_monetization_types=flatrate") else {
             return
         }
