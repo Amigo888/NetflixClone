@@ -18,7 +18,7 @@ In this project I've tried to make some funchionality of Netflix App
 
 ## Home Screen
 
-<img src="https://github.com/Amigo888/NetflixClone/assets/121450804/4595842c-d113-492d-82af-d7e97bac5d5f" alt="Описание изображения" width="393" height="852">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/Amigo888/NetflixClone/assets/121450804/4595842c-d113-492d-82af-d7e97bac5d5f" alt="Описание изображения" width="393" height="852">
 <img src="https://github.com/Amigo888/NetflixClone/assets/121450804/1aef58a2-66be-442e-b0fe-3714e3a2af0a" alt="Описание изображения" width="393" height="852">
 
 ## UpComing Screen
