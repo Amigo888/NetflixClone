@@ -11,24 +11,23 @@ protocol CollectionViewTableViewCellDelegate: AnyObject {
     func collectionViewTableViewCellDidTapeCell(_ cell: CollectionViewTableViewCell, viewModel: TitlePreviewViewModel )
 }
 
-class CollectionViewTableViewCell: UITableViewCell {
-
+final class CollectionViewTableViewCell: UITableViewCell {
+    
     static let identifier = "CollectionViewTableViewCell"
     
     weak var delegate: CollectionViewTableViewCellDelegate?
     
     private var titles: [Title] = [Title]()
     
-    //create collection View
-    private let collectionView: UICollectionView = {
-        
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        //size
         layout.itemSize = CGSize(width: 140, height: 200)
-        //type of scroll direction
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.register(TitleCollectionViewCell.self, forCellWithReuseIdentifier: TitleCollectionViewCell.identifier)
+        collectionView.register(
+            TitleCollectionViewCell.self,
+            forCellWithReuseIdentifier: TitleCollectionViewCell.identifier
+        )
         return collectionView
     }()
     
@@ -75,8 +74,12 @@ class CollectionViewTableViewCell: UITableViewCell {
 extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //creating collectionview cell
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TitleCollectionViewCell.identifier, for: indexPath) as? TitleCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: TitleCollectionViewCell.identifier,
+            for: indexPath)
+                as? TitleCollectionViewCell else {
+            return UICollectionViewCell()
+        }
         guard let model = titles[indexPath.row].poster_path else {
             return UICollectionViewCell()
         }
@@ -92,15 +95,20 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
         collectionView.deselectItem(at: indexPath, animated: true)
         
         let title = titles[indexPath.row]
-        guard let titleName = title.original_title ?? title.original_name else { return }
-        
+        guard let titleName = title.original_title ?? title.original_name else {
+            return
+        }
         APICaller.shared.getMovie(with: titleName + "trailer") { [weak self] result in
             switch result {
             case .success(let videoElement):
                 
                 let title = self?.titles[indexPath.row]
-                guard let titleOverview = title?.overview else { return }
-                guard let strongSelf = self else { return }
+                guard let titleOverview = title?.overview else {
+                    return
+                }
+                guard let strongSelf = self else {
+                    return
+                }
                 let viewModel = TitlePreviewViewModel(title: titleName, youtubeView: videoElement, titleOverview: titleOverview)
                 self?.delegate?.collectionViewTableViewCellDidTapeCell(strongSelf, viewModel: viewModel)
             case .failure(let error):
@@ -118,7 +126,6 @@ extension CollectionViewTableViewCell: UICollectionViewDelegate, UICollectionVie
                 }
                 return UIMenu(title: "", image: nil, identifier: nil, options: .displayInline, children: [downloadAction])
             }
-        
         return config
     }
 }

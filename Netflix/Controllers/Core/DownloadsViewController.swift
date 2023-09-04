@@ -7,19 +7,19 @@
 
 import UIKit
 
-class DownloadsViewController: UIViewController {
+final class DownloadsViewController: UIViewController {
     
     private var titles: [TitleItem] = [TitleItem]()
     
-    private let downloadedTable : UITableView = {
+    private lazy var downloadedTable : UITableView = {
         let tableView = UITableView()
         tableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
         return tableView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .systemBackground
         title = "Downloads"
         view.addSubview(downloadedTable)
@@ -66,7 +66,11 @@ extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
             return UITableViewCell()
         }
         let title = titles[indexPath.row]
-        cell.configure(with: TitleViewModel(titleName: title.original_title ?? title.original_name ?? "Uknown title name", posterURL: title.poster_path ?? ""))
+        cell.configure(
+            with: TitleViewModel(
+                titleName: title.original_title ?? title.original_name ?? "Uknown title name", posterURL: title.poster_path ?? ""
+            )
+        )
         return cell
     }
     
@@ -87,11 +91,8 @@ extension DownloadsViewController: UITableViewDelegate, UITableViewDataSource {
                 self?.titles.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .fade)
             }
-            
         default:
             break;
         }
     }
-    
-    
 }

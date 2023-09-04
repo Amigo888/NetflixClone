@@ -7,11 +7,11 @@
 
 import UIKit
 
-class TitleTableViewCell: UITableViewCell {
+final class TitleTableViewCell: UITableViewCell {
 
     static let identifier = "TitleTableViewCell"
     
-    private let playTitleButton : UIButton = {
+    private lazy var playTitleButton : UIButton = {
         let button = UIButton()
         let image = UIImage(systemName: "play.circle", withConfiguration: UIImage.SymbolConfiguration(pointSize: 30))
         button.setImage(image, for: .normal)

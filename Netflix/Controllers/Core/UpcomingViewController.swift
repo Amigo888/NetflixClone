@@ -7,16 +7,19 @@
 
 import UIKit
 
-class UpcomingViewController: UIViewController {
+final class UpcomingViewController: UIViewController {
     
     private var titles: [Title] = [Title]()
     
-    private let upcomigTable : UITableView = {
+    private lazy var upcomigTable : UITableView = {
         let tableView = UITableView()
-        tableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
+        tableView.register(
+            TitleTableViewCell.self,
+            forCellReuseIdentifier: TitleTableViewCell.identifier
+        )
         return tableView
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -27,7 +30,6 @@ class UpcomingViewController: UIViewController {
         view.addSubview(upcomigTable)
         upcomigTable.delegate = self
         upcomigTable.dataSource = self
-        print(titles)
         fetchUpcoming()
     }
     
@@ -59,11 +61,17 @@ extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: TitleTableViewCell.identifier, for: indexPath) as? TitleTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: TitleTableViewCell.identifier,
+            for: indexPath
+        ) as? TitleTableViewCell else {
             return UITableViewCell()
         }
         let title = titles[indexPath.row]
-        cell.configure(with: TitleViewModel(titleName: title.original_title ?? title.original_name ?? "Uknown title name", posterURL: title.poster_path ?? ""))
+        cell.configure(with: TitleViewModel(
+            titleName: title.original_title ?? title.original_name ?? "Uknown title name",
+            posterURL: title.poster_path ?? "")
+        )
         return cell
     }
     
@@ -76,21 +84,27 @@ extension UpcomingViewController: UITableViewDelegate, UITableViewDataSource {
         
         let title = titles[indexPath.row]
         
-        guard let titleName = title.original_title ?? title.original_name else { return }
+        guard let titleName = title.original_title ?? title.original_name else {
+            return
+        }
         
         APICaller.shared.getMovie(with: titleName) { [weak self] result in
             switch result {
             case .success(let videoElement):
                 DispatchQueue.main.async {
                     let vc = TitlePreviewViewController()
-                    vc.configure(with: TitlePreviewViewModel(title: titleName, youtubeView: videoElement, titleOverview: title.overview ?? ""))
+                    vc.configure(
+                        with: TitlePreviewViewModel(
+                            title: titleName,
+                            youtubeView: videoElement,
+                            titleOverview: title.overview ?? ""
+                        )
+                    )
                     self?.navigationController?.pushViewController(vc, animated: true)
                 }
-               case .failure(let error):
+            case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
-    
-    
 }

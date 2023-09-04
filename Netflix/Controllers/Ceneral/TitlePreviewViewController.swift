@@ -8,9 +8,9 @@
 import UIKit
 import WebKit
 
-class TitlePreviewViewController: UIViewController {
+final class TitlePreviewViewController: UIViewController {
     
-    private let titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 22, weight: .bold)
@@ -18,7 +18,7 @@ class TitlePreviewViewController: UIViewController {
         return label
     }()
     
-    private let overviewLabel: UILabel = {
+    private lazy var overviewLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -27,7 +27,7 @@ class TitlePreviewViewController: UIViewController {
         return label
     }()
     
-    private let downloadButton : UIButton = {
+    private lazy var downloadButton : UIButton = {
         let button = UIButton()
         button.backgroundColor = .red
         button.setTitle("Download", for: .normal)
@@ -38,7 +38,7 @@ class TitlePreviewViewController: UIViewController {
         return button
     }()
     
-    private let webView : WKWebView = {
+    private lazy var webView : WKWebView = {
         let webView = WKWebView()
         webView.translatesAutoresizingMaskIntoConstraints = false
         return webView
@@ -96,7 +96,6 @@ class TitlePreviewViewController: UIViewController {
         guard let url = URL(string: "https://www.youtube.com/emded/\(model.youtubeView.id.videoId)") else {
             return
         }
-        
         webView.load(URLRequest(url: url))
     }
 }

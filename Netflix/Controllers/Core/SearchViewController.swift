@@ -7,18 +7,21 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     
     
     private var titles: [Title] = [Title]()
     
-    private let dicoverTable : UITableView = {
+    private lazy var dicoverTable : UITableView = {
         let tableView = UITableView()
-        tableView.register(TitleTableViewCell.self, forCellReuseIdentifier: TitleTableViewCell.identifier)
+        tableView.register(
+            TitleTableViewCell.self,
+            forCellReuseIdentifier: TitleTableViewCell.identifier
+        )
         return tableView
     }()
 
-    private let searchController : UISearchController = {
+    private lazy var searchController : UISearchController = {
         let controller = UISearchController(searchResultsController: SearchResultViewController())
         controller.searchBar.placeholder = "Search for a movie or a Tv show"
         controller.searchBar.searchBarStyle = .minimal
@@ -114,8 +117,9 @@ extension SearchViewController: UISearchResultsUpdating, SearchResultViewControl
         guard let query = searchBar.text,
               !query.trimmingCharacters(in: .whitespaces).isEmpty,
               query.trimmingCharacters(in: .whitespaces).count >= 3,
-              let resultsController = searchController.searchResultsController as? SearchResultViewController else { return }
-        
+              let resultsController = searchController.searchResultsController as? SearchResultViewController else {
+            return
+        }
         resultsController.delegate = self
         APICaller.shared.search(with: query) { result in
             DispatchQueue.main.async {
